@@ -1,0 +1,99 @@
+{% extends "index.html" %}
+
+{% block headertitlle %}
+<title>User</title>
+{% endblock %}
+
+{% block bodytitleoptions %}
+{% if user.is_authenticated %}
+<a class="btn btn-primary" href="{% url 'UserCoderLogOut' %}"> Logout </a>
+{% endif %}
+{% endblock %}
+
+{% block bodyheader %}
+<header>
+
+    <h1 class="display-5 fw-bolder text-white mb-2">Modifique su usuario</h1>
+    <div class="d-grid gap-3 d-sm-flex justify-content-sm-center">
+    </div>
+    {% endblock %}
+    {% block bodyoptions %}
+    <div class="space2">
+    </div>
+    <div class="datos-usuario">
+        <div class="container px-5 my-5">
+            <div class="row gx-5">
+                {% if messages %}
+                <ul class="messages">
+                    {% for message in messages %}
+                    <li {% if message.tags %} class="{{ message.tags }}" {% endif %}>{{message }}</li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+                <form class="bodyoptionstittle" id="usuarios" name="usuarios" action="" method="POST"
+                      enctype="multipart/form-data">
+                    <b>
+                        {% csrf_token %}
+                        <table style="width:80%">
+                            {{ formulariousuario.media }}
+                            {% for field in formulariousuario %}
+                            <tr>
+                                {% if field.label == "Username" %}
+                                <th >Nombre de usuario <em>*</em></th>
+                                <th style="display:none;">{{ field }}</th>
+                                <th>{{ field.value }}</th>
+                                {% endif %}
+                                {% if field.label == "First name" %}
+                                <th>Nombre <em>*</em></th>
+                                <th>{{ field }}</th>
+                                {% endif %}
+                                {% if field.label == "Last name" %}
+                                <th>Apellido <em>*</em></th>
+                                <th>{{ field }}</th>
+                                {% endif %}
+                                {% if field.label == "Email address" %}
+                                <th>Email <em>*</em></th>
+                                <th>{{ field }}</th>
+                                {% endif %}
+                                {% if field.label == "Active" and user.is_superuser %}
+                                <th>Usuario activo</th>
+                                <th>{{ field }}</th>
+                                {% endif %}
+                                {% if field.label == "Staff status" and user.is_superuser %}
+                                <th>Staff <em>*</em></th>
+                                <th>{{ field }}</th>
+                                {% endif %}
+                                {% if field.label == "Superuser status" and user.is_superuser %}
+                                <th>Superusuario <em>*</em></th>
+                                <th>{{ field }}</th>
+                                {% endif %}
+                                {% if field.label == "Date joined" %}
+                                <th>Fecha de creacion</th>
+                                <th style="display:none;">{{ field }}</th>
+                                <th>{{ field.value }}</th>
+                                {% endif %}
+                                {% if field.label == "Imagen" %}
+                                <th>Avatar</th>
+                                <th>{{ field }}</th>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                        </table>
+                        <br>
+                        {% if usuario.avatar.avatar.url != "" %}
+                        <th><img src="{{ usuario.avatar.avatar.url }}" alt="" width="50px" height="50px"></th>
+                        {% else %}
+                        <td class="tddata"></td>
+                        {% endif %}
+                        <br> <br>
+                        <label style="color: black;">Los campos con * son obligatorios.</label><br>
+                        <p><input type="submit" value="Modificar"/></p>
+                        <br>
+                    </b>
+                </form>
+            </div>
+            <a class="btn btn-secondary " href="{% url 'TPFinalUsuariosModificarPass' %}"> Cambiar password </a>
+        </div>
+    </div>
+</header>
+{% endblock %}
